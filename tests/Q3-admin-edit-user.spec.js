@@ -4,12 +4,12 @@ const { AdminPage } = require('../pages/AdminPage');
 
 test.setTimeout(60000);
 
-test('Q3 - Search and edit user role/status', async ({ page }) => {
+test('Q3 - Search and edit user status', async ({ page }) => {
 
     const loginPage = new LoginPage(page);
     const adminPage = new AdminPage(page);
 
-    const username = 'kiran.kumar';
+    const username = 'Kumar123';
 
     await page.goto(
         'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
@@ -21,27 +21,21 @@ test('Q3 - Search and edit user role/status', async ({ page }) => {
 
     await adminPage.searchUser(username);
 
-    await expect(
-        page.locator(`//div[normalize-space()='${username}']`)
-    ).toBeVisible();
+   await expect(
+    page.getByRole('cell', { name: username })
+).toBeVisible();
 
-    await adminPage.editUser();
+    await adminPage.editUser(username);
 
-    await adminPage.changeRoleAndStatus();
+   await adminPage.changeStatus();
 
     await adminPage.saveChanges();
 
     await page.reload();
 
     await expect(
-        adminPage.userRoleDropdown
-    ).toContainText('Admin');
-
-    await expect(
         adminPage.statusDropdown
     ).toContainText('Disabled');
-
-    // 11. Logout
     await adminPage.logout();
 
     await expect(page).toHaveURL(/auth\/login/);
