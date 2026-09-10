@@ -1,0 +1,42 @@
+{
+  "info": {
+    "_postman_id": "117aaa60-c485-4d28-8074-b8a971149383",
+    "name": "Part-D-API-Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58128632",
+    "_collection_link": "https://go.postman.co/collection/58128632-117aaa60-c485-4d28-8074-b8a971149383?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - Get All Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst users = pm.response.json();\r\n\r\npm.test(\"Response contains user data\", function () {\r\n    pm.expect(users).to.be.an(\"array\").that.is.not.empty;\r\n});\r\n\r\npm.test(\"Each user has id, name and email\", function () {\r\n    users.forEach((user) => {\r\n        pm.expect(user).to.have.property(\"id\");\r\n        pm.expect(user).to.have.property(\"name\");\r\n        pm.expect(user).to.have.property(\"email\");\r\n    });\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
