@@ -2,27 +2,33 @@ class AdminPage {
 
     constructor(page) {
         this.page = page;
-        this.adminMenu = page.locator('a[href="/web/index.php/admin/viewAdminModule"]');
-        this.usernameSearch = page.locator( "input.oxd-input" ).first();
-       this.employeeNameSearch = page.locator( "input[placeholder='Type for hints...']" ).first();
 
-        this.statusDropdown = page.locator('.oxd-input-group').filter({ hasText: 'Status' }).locator('.oxd-select-text');
+        this.adminMenu = page.locator(
+            'a[href="/web/index.php/admin/viewAdminModule"]'
+        );
+
+        this.usernameSearch = page.locator(
+            "input.oxd-input"
+        ).first();
+
+        this.statusDropdown = page
+            .locator('.oxd-input-group')
+            .filter({ hasText: 'Status' })
+            .locator('.oxd-select-text');
 
         this.searchButton = page.locator(
             "//button[normalize-space()='Search']"
         );
-        this.resultUsername = page.locator(
-            "//div[@class='oxd-table-card']//div[2]//div[1]"
-        );
 
         this.editButton = (username) =>
-    page.getByRole('row')
-        .filter({
-            has: page.getByRole('cell', { name: username })
-        })
-        .locator('i.oxd-icon.bi-pencil-fill');
+            page.locator('.oxd-table-card')
+                .filter({ hasText: username })
+                .locator('i.oxd-icon.bi-pencil-fill');
 
-       this.disabledOption = page.getByText('Disabled', { exact: true });
+        this.disabledOption = page.getByText(
+            'Disabled',
+            { exact: true }
+        );
 
         this.saveButton = page.locator(
             "//button[normalize-space()='Save']"
@@ -39,25 +45,30 @@ class AdminPage {
 
     async goToAdmin() {
         await this.adminMenu.click();
+        await this.page.waitForTimeout(2000);
     }
 
     async searchUser(username) {
         await this.usernameSearch.fill(username);
         await this.searchButton.click();
+        await this.page.waitForTimeout(3000);
     }
 
     async editUser(username) {
-    await this.editButton(username).click();
-}
+        await this.editButton(username).click();
+        await this.page.waitForTimeout(2000);
+    }
 
     async changeStatus() {
-
-    await this.statusDropdown.click();
-    await this.disabledOption.click();
-}
+        await this.statusDropdown.click();
+        await this.page.waitForTimeout(1000);
+        await this.disabledOption.click();
+        await this.page.waitForTimeout(1000);
+    }
 
     async saveChanges() {
         await this.saveButton.click();
+        await this.page.waitForTimeout(3000);
     }
 
     async logout() {
