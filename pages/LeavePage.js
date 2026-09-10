@@ -3,73 +3,138 @@ class LeavePage {
     constructor(page) {
         this.page = page;
 
-        // Leave menu
         this.leaveMenu = page.locator(
             'a[href="/web/index.php/leave/viewLeaveModule"]'
         );
 
-        // Apply tab
         this.applyLeaveTab = page.locator(
             "//a[normalize-space()='Apply']"
         );
 
-        // Leave Type dropdown
-        this.leaveTypeDropdown = page.locator(
-            "//div[@class='oxd-select-text-input']"
-        );
+        this.leaveTypeDropdown = page
+            .locator('.oxd-input-group')
+            .filter({ hasText: 'Leave Type' })
+            .locator('.oxd-select-text');
 
-        // CAN - Personal option
         this.personalLeaveOption = page.locator(
             "//div[contains(@class,'oxd-select-dropdown')]//div[normalize-space()='CAN - Personal']"
         );
 
-        // From Date
         this.fromDateInput = page.locator(
             "input[placeholder='yyyy-dd-mm']"
         ).first();
 
-        // To Date
         this.toDateInput = page.locator(
             "input[placeholder='yyyy-dd-mm']"
         ).nth(1);
 
-        // Comments
         this.commentsInput = page.locator(
             "textarea.oxd-textarea"
         );
 
-        // Apply button
         this.applyButton = page.locator(
             "//button[normalize-space()='Apply']"
         );
 
-        // My Leave
         this.myLeaveTab = page.locator(
             "//a[normalize-space()='My Leave']"
-        );
-
-        // Pending Approval
-        this.pendingApprovalStatus = page.locator(
-            "//div[contains(text(),'Pending Approval')]"
-        );
-
-        // Cancel
-        this.cancelButton = page.locator(
-            "//button[normalize-space()='Cancel']"
-        );
-
-        // Cancelled
-        this.cancelledStatus = page.locator(
-            "//div[contains(text(),'Cancelled')]"
         );
     }
 
     async goToLeave() {
         await this.leaveMenu.click();
+        await this.page.waitForTimeout(2000);
     }
 
     async clickApplyLeave() {
         await this.applyLeaveTab.click();
+        await this.page.waitForTimeout(2000);
+    }
+
+    async selectLeaveType() {
+
+        await this.leaveTypeDropdown.click();
+
+        await this.page.waitForTimeout(1000);
+
+        await this.personalLeaveOption.click();
+
+        await this.page.waitForTimeout(1000);
+    }
+
+    async enterDate(input, date) {
+
+        await input.click();
+
+        await this.page.waitForTimeout(500);
+
+        await input.press('Control+A');
+
+        await input.press('Backspace');
+
+        await this.page.waitForTimeout(500);
+
+        await input.pressSequentially(date, {
+            delay: 100
+        });
+
+        await this.page.waitForTimeout(1000);
+    }
+
+    async fillLeaveDetails(fromDate, toDate, comments) {
+
+        await this.enterDate(
+            this.fromDateInput,
+            fromDate
+        );
+
+        
+        await this.enterDate(
+            this.toDateInput,
+            toDate
+        );
+
+        
+        await this.commentsInput.fill(comments);
+
+        await this.page.waitForTimeout(1000);
+    }
+
+    async applyLeave() {
+
+        await this.applyButton.click();
+
+        await this.page.waitForTimeout(3000);
+    }
+
+    async goToMyLeave() {
+
+        await this.myLeaveTab.click();
+
+        await this.page.waitForTimeout(3000);
+    }
+
+    async getLeaveRow(comments) {
+
+        return this.page
+            .locator('.oxd-table-card')
+            .filter({
+                hasText: comments
+            });
+    }
+
+    async cancelLeave(comments) {
+
+        const leaveRow = await this.getLeaveRow(comments);
+
+        const cancelButton = leaveRow.getByRole(
+            'button',
+            { name: 'Cancel' }
+        );
+
+        await cancelButton.click();
+
+        await this.page.waitForTimeout(3000);
     }
 }
 
