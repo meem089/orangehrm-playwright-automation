@@ -1,0 +1,146 @@
+{
+  "info": {
+    "_postman_id": "117aaa60-c485-4d28-8074-b8a971149383",
+    "name": "Part-D-API-Automation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "58128632",
+    "_collection_link": "https://go.postman.co/collection/58128632-117aaa60-c485-4d28-8074-b8a971149383?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET - Get All Users",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const users = pm.response.json();\r\n\r\nconst userId = users[0].id;\r\nconst userPhone = users[0].phone;\r\n\r\npm.collectionVariables.set(\"userId\", userId);\r\npm.collectionVariables.set(\"userPhone\", userPhone);\r\n\r\npm.test(\"User ID is extracted and stored\", function () {\r\n    pm.expect(userId).to.exist;\r\n    pm.expect(userId).to.be.a(\"number\");\r\n});\r\n\r\npm.test(\"User phone is stored\", function () {\r\n    pm.expect(userPhone).to.exist;\r\n    pm.expect(userPhone).to.not.equal(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET - Get Single User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst user = pm.response.json();\r\n\r\npm.test(\"Returned user ID matches stored user ID\", function () {\r\n    pm.expect(user.id).to.eql(\r\n        Number(pm.collectionVariables.get(\"userId\"))\r\n    );\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/{{userId}}",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT - Update User",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const randomNumber = Math.floor(Math.random() * 9000) + 1000;\r\n\r\npm.collectionVariables.set(\r\n    \"randomName\",\r\n    `Test User ${randomNumber}`\r\n);\r\n\r\npm.collectionVariables.set(\r\n    \"randomEmail\",\r\n    `testuser${randomNumber}@example.com`\r\n);\r\n\r\npm.collectionVariables.set(\r\n    \"randomCompany\",\r\n    `Test Company ${randomNumber}`\r\n);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\n\r\nconst responseData = pm.response.json();\r\n\r\nconst storedUserId = Number(\r\n    pm.collectionVariables.get(\"userId\")\r\n);\r\n\r\nconst storedUserPhone =\r\n    pm.collectionVariables.get(\"userPhone\");\r\n\r\npm.test(\"Returned ID matches stored user ID\", function () {\r\n    pm.expect(responseData.id).to.eql(storedUserId);\r\n});\r\n\r\npm.test(\"Phone is not empty\", function () {\r\n    pm.expect(storedUserPhone).to.exist;\r\n    pm.expect(storedUserPhone).to.not.equal(\"\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"{{randomName}}\",\r\n    \"email\": \"{{randomEmail}}\",\r\n    \"company\": {\r\n        \"name\": \"{{randomCompany}}\"\r\n    }\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://jsonplaceholder.typicode.com/users/{{userId}}",
+          "protocol": "https",
+          "host": [
+            "jsonplaceholder",
+            "typicode",
+            "com"
+          ],
+          "path": [
+            "users",
+            "{{userId}}"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "randomName",
+      "value": ""
+    },
+    {
+      "key": "randomEmail",
+      "value": ""
+    },
+    {
+      "key": "randomCompany",
+      "value": ""
+    },
+    {
+      "key": "userPhone",
+      "value": ""
+    }
+  ]
+}
