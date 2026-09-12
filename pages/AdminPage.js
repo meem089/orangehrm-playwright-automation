@@ -25,10 +25,8 @@ class AdminPage {
                 .filter({ hasText: username })
                 .locator('i.oxd-icon.bi-pencil-fill');
 
-        this.disabledOption = page.getByText(
-            'Disabled',
-            { exact: true }
-        );
+        // Fix strict mode error by targeting dropdown options specifically
+        this.disabledOption = page.getByRole('option', { name: 'Disabled' });
 
         this.saveButton = page.locator(
             "//button[normalize-space()='Save']"
