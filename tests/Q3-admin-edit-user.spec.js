@@ -10,7 +10,7 @@ test('Q3 - Search and edit user status', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const adminPage = new AdminPage(page);
 
-   const username ='Berneice.Ferry';
+    const username = 'Jobinsam@6742';
 
     await page.goto(
         'https://opensource-demo.orangehrmlive.com/web/index.php/auth/login'
@@ -33,9 +33,10 @@ test('Q3 - Search and edit user status', async ({ page }) => {
         .locator('.oxd-table-card')
         .filter({
             hasText: username
-        });
+        })
+        .first();
 
-    await expect(userRow).toBeVisible();
+    await expect(userRow).toBeVisible({ timeout: 15000 });
 
     await adminPage.editUser(username);
 
@@ -43,9 +44,9 @@ test('Q3 - Search and edit user status', async ({ page }) => {
 
     await adminPage.saveChanges();
 
-    await page.reload();
-
-    await page.waitForTimeout(3000);
+    await page.waitForURL('**/admin/viewSystemUsers');
+    
+    await page.reload({ waitUntil: 'networkidle' });
 
     await adminPage.searchUser(username);
 
@@ -53,9 +54,10 @@ test('Q3 - Search and edit user status', async ({ page }) => {
         .locator('.oxd-table-card')
         .filter({
             hasText: username
-        });
+        })
+        .first();
 
-    await expect(userRow).toBeVisible();
+    await expect(userRow).toBeVisible({ timeout: 15000 });
 
     await expect(userRow).toContainText('Disabled');
 

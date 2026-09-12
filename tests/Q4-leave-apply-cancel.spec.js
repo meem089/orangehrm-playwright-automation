@@ -10,9 +10,20 @@ test('Q4 - Apply Leave, Verify Pending Approval and Cancel Leave', async ({ page
     const loginPage = new LoginPage(page);
     const leavePage = new LeavePage(page);
 
-   const randomDay = Math.floor(Math.random() * 20) + 10;
-const fromDate = `2026-09-${randomDay}`;
-const toDate = `2026-09-${randomDay}`;
+    const targetDate = new Date();
+    targetDate.setDate(targetDate.getDate() + Math.floor(Math.random() * 30) + 1);
+
+    if (targetDate.getDay() === 0) {
+        targetDate.setDate(targetDate.getDate() + 1);
+    } else if (targetDate.getDay() === 6) {
+        targetDate.setDate(targetDate.getDate() + 2);
+    }
+
+    const year = targetDate.getFullYear();
+    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
+    const day = String(targetDate.getDate()).padStart(2, '0');
+    
+    const formattedDate = `${year}-${day}-${month}`;
     const comments = `Automation Leave ${Date.now()}`;
 
     await page.goto(
@@ -35,8 +46,8 @@ const toDate = `2026-09-${randomDay}`;
     await leavePage.selectLeaveType();
 
     await leavePage.fillLeaveDetails(
-        fromDate,
-        toDate,
+        formattedDate,
+        formattedDate,
         comments
     );
 
