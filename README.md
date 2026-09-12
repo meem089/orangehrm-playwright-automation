@@ -33,6 +33,7 @@ https://opensource-demo.orangehrmlive.com/web/index.php/auth/login
 
 ## Project Structure
 
+```text
 orangehrm-playwright-automation/
 │
 ├── .github/
@@ -74,13 +75,13 @@ Make sure the following are installed:
 * npm
 * Git
 
-Check Node.js:
+Check Node.js version:
 
 ```bash
 node --version
 ```
 
-Check npm:
+Check npm version:
 
 ```bash
 npm --version
@@ -140,13 +141,13 @@ npx playwright test tests/Q4-leave-apply-cancel.spec.js
 
 ## Run All UI Tests Together
 
-To execute all Playwright UI tests sequentially:
+To execute the complete Q1-Q4 UI automation suite:
 
 ```bash
 npx playwright test
 ```
 
-This runs the complete Q1-Q4 UI automation suite.
+This runs all UI automation scenarios together.
 
 ## Run API Automation
 
@@ -157,6 +158,8 @@ Run the Postman collection using Newman:
 ```bash
 npx newman run "api/Part-D-API-Automation.postman_collection(step-4).json"
 ```
+
+The API automation covers the JSONPlaceholder Users API.
 
 ## Run UI and API Tests Together
 
@@ -178,7 +181,7 @@ This executes the UI and API automation sequentially.
 
 ### HTML Report
 
-After running Playwright tests, generate/view the HTML report:
+After running Playwright tests, open the HTML report:
 
 ```bash
 npx playwright show-report
@@ -192,7 +195,7 @@ npx playwright show-report --port 9324
 
 ### Allure Report
 
-Allure results are generated after Playwright execution.
+Allure results are generated after Playwright test execution.
 
 Generate the Allure report:
 
@@ -204,6 +207,14 @@ Open the Allure report:
 
 ```bash
 npx allure open allure-report
+```
+
+### Newman API Report
+
+The Newman execution report is available in:
+
+```text
+api/newman-report.json
 ```
 
 ## Manual Testing
@@ -244,11 +255,11 @@ The API tests cover:
 
 ## Reporting
 
-The project uses:
+The project uses the following reporting tools:
 
 * Playwright HTML Report
 * Allure Report
-* Newman API execution report
+* Newman API Execution Report
 
 ## GitHub Workflow
 
@@ -262,6 +273,25 @@ The project was developed incrementally with meaningful commits for different pa
 * Manual testing
 * Test reports
 * Documentation
+
+## Test Coverage
+
+### UI Automation
+
+| Scenario                     | Module | Status |
+| ---------------------------- | ------ | ------ |
+| Q1 - Invalid Login           | Login  | Passed |
+| Q2 - Add and Search Employee | PIM    | Passed |
+| Q3 - Admin Edit User         | Admin  | Passed |
+| Q4 - Leave Apply and Cancel  | Leave  | Passed |
+
+### API Automation
+
+| Request         | Method | Status |
+| --------------- | ------ | ------ |
+| Get All Users   | GET    | Passed |
+| Get Single User | GET    | Passed |
+| Update User     | PUT    | Passed |
 
 ## Author
 
