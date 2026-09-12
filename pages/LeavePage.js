@@ -16,8 +16,8 @@ class LeavePage {
             .filter({ hasText: 'Leave Type' })
             .locator('.oxd-select-text');
 
-        this.vacationLeaveOption = page.getByText(
-            'CAN - Vacation',
+        this.bereavementLeaveOption = page.getByText(
+            'CAN - Bereavement',
             { exact: true }
         );
 
@@ -55,7 +55,7 @@ class LeavePage {
     async selectLeaveType() {
         await this.leaveTypeDropdown.click();
         await this.page.waitForTimeout(1000);
-        await this.vacationLeaveOption.click();
+        await this.bereavementLeaveOption.click();
         await this.page.waitForTimeout(1000);
     }
 
@@ -94,19 +94,11 @@ class LeavePage {
         await this.page.waitForTimeout(3000);
     }
 
-    async getLeaveRow(fromDate, toDate) {
-        const dateText =
-            fromDate === toDate
-                ? fromDate
-                : `${fromDate} to ${toDate}`;
-
+    async getLeaveRow() {
         return this.page
             .locator('.oxd-table-card')
             .filter({
-                hasText: dateText
-            })
-            .filter({
-                hasText: 'CAN - Vacation'
+                hasText: 'CAN - Bereavement'
             })
             .filter({
                 hasText: 'Pending Approval'
@@ -114,12 +106,8 @@ class LeavePage {
             .first();
     }
 
-    async cancelLeave(fromDate, toDate) {
-        const leaveRow = await this.getLeaveRow(
-            fromDate,
-            toDate
-        );
-
+    async cancelLeave() {
+        const leaveRow = await this.getLeaveRow();
         await leaveRow
             .getByRole('button', { name: 'Cancel' })
             .click();

@@ -10,8 +10,9 @@ test('Q4 - Apply Leave, Verify Pending Approval and Cancel Leave', async ({ page
     const loginPage = new LoginPage(page);
     const leavePage = new LeavePage(page);
 
-    const fromDate = '2021-01-01';
-    const toDate = '2026-31-12';
+   const randomDay = Math.floor(Math.random() * 20) + 10;
+const fromDate = `2026-09-${randomDay}`;
+const toDate = `2026-09-${randomDay}`;
     const comments = `Automation Leave ${Date.now()}`;
 
     await page.goto(
@@ -43,10 +44,7 @@ test('Q4 - Apply Leave, Verify Pending Approval and Cancel Leave', async ({ page
 
     await leavePage.goToMyLeave();
 
-    const leaveRow = await leavePage.getLeaveRow(
-        fromDate,
-        toDate
-    );
+    const leaveRow = await leavePage.getLeaveRow();
 
     await expect(leaveRow).toBeVisible({
         timeout: 15000
@@ -57,21 +55,15 @@ test('Q4 - Apply Leave, Verify Pending Approval and Cancel Leave', async ({ page
     );
 
     await expect(leaveRow).toContainText(
-        'CAN - Vacation'
+        'CAN - Bereavement'
     );
 
-    await leavePage.cancelLeave(
-        fromDate,
-        toDate
-    );
+    await leavePage.cancelLeave();
 
     const cancelledLeaveRow = page
         .locator('.oxd-table-card')
         .filter({
-            hasText: fromDate
-        })
-        .filter({
-            hasText: 'CAN - Vacation'
+            hasText: 'CAN - Bereavement'
         })
         .filter({
             hasText: 'Cancelled'
