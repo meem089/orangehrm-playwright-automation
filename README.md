@@ -1,8 +1,9 @@
 # OrangeHRM Playwright Automation
-OSTAD Course Final Project Assignment
-Course: SQA: Manual & Automation Testing
-Batch: 18
-Project: OrangeHRM Playwright Automation
+## OSTAD Course Final Project Assignment
+
+- **Course:** SQA: Manual & Automation Testing
+- **Batch:** 18
+- **Project:** OrangeHRM Playwright Automation
 
 ## Project Overview
 
