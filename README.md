@@ -1,8 +1,12 @@
 # OrangeHRM Playwright Automation
+OSTAD Course Final Project Assignment
+Course: SQA: Manual & Automation Testing
+Batch: 18
+Project: OrangeHRM Playwright Automation
 
 ## Project Overview
 
-This project is an automated testing suite for the OrangeHRM web application using Playwright.
+This project is the final project assignment for the Ostad SQA: Manual & Automation Testing course. It demonstrates practical knowledge and implementation of Software Quality Assurance through UI automation, manual testing, API automation, test reporting, and CI workflow.
 
 The project covers:
 
